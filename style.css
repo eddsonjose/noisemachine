@@ -6,10 +6,59 @@ html, body {
   padding: 0;
   overflow-x: hidden;
 }
-
 canvas {
   margin: auto;
   top: 0;
   left: 0;
   position: absolute;
   z-index: -1;
+}
+/* ---------------------------------Keyboard--------------------------------- */
+.keyboard {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
+/* .key {
+  display: inline-block;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  float: left;
+}
+.button {
+  width: 10%;
+  display: block;
+  border: none;
+  padding-top: 200px;
+  padding-bottom: 10px;
+  color: grey;
+} */
+.key {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  float: left;
+}
+.button {
+  bottom: 0;
+  width: 10%;
+  display: inline-block;
+  border: none;
+  padding-top: 200px;
+  padding-bottom: 10px;
+  color: grey;
+}
+.button:hover {
+  background-color: #969696;
+  color: black;
+}
+/* ---------------------------------Keyboard--------------------------------- */
+h1 {
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
