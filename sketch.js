@@ -3,10 +3,32 @@
 let synth = new Tone.Synth() .toMaster();
 let div0, div1, div2;
 let keyA, keyS, keyD, keyF, keyG, keyH, keyJ, keyK, keyL, keySemicolon;
+let capture;
+let tracker
+let w = 640,
+    h = 480;
 
 //-----------------------------------------------------------------------------
 function setup() {
   noCanvas();
+  //---------------------------------------------------------
+  capture = createCapture({
+        audio: false,
+        video: {
+            width: w,
+            height: h
+        }
+    }, function() {
+        console.log('capture ready.')
+    });
+    capture.elt.setAttribute('playsinline', '');
+    createCanvas(w, h);
+    capture.size(w, h);
+    capture.hide();
+    tracker = new clm.tracker();
+    tracker.init();
+    tracker.start(capture.elt);
+  //---------------------------------------------------------
   // createCanvas(windowWidth, windowHeight);
   // background(100);
   div0 = createDiv(); div0.class('keyboard');
@@ -26,6 +48,61 @@ function setup() {
 function draw() {
   // fill(0);
   // text("Use the keyboard keys: ASDFGHJKL;", width/2 - 100, height/2);
+  image(capture, 0, 0, w, h);
+    var positions = tracker.getCurrentPosition();
+    noStroke();
+    // for (var i = 0; i < positions.length; i++) {
+    //     fill(map(i, 0, positions.length, 0, 360), 50, 100);
+    //     ellipse(positions[i][0], positions[i][1], 4, 4);
+    //     text(i, positions[i][0], positions[i][1]);
+    // }
+    //ellipse for face---------------------------------
+    stroke(0);
+    strokeWeight(1);
+    fill(200);
+    ellipse(320, 240, 170, 230);
+    //play sound when smiling--------------------------
+    // if (positions.length > 0) {
+    //    var mouthLeft = createVector(positions[44][0], positions[44][1]);
+    //    var mouthRight = createVector(positions[50][0], positions[50][1]);
+    //    var smile = mouthLeft.dist(mouthRight);
+    //
+    //    rect(20, 20, smile * 3, 20);
+    //    if (smile >= 70) {
+    //      synth.triggerAttackRelease("E4", 0.3);
+    //    }
+    //  }
+    // play sound when eyebrows are raised--------------
+    if (positions.length > 0) {
+       var eyebrowLeft = createVector(positions[16][0], positions[16][1]);
+       var eyeLeft = createVector(positions[32][0], positions[32][1]);
+       var eyebrowLifted = eyebrowLeft.dist(eyeLeft);
+
+       var mouthLeft = createVector(positions[47][0], positions[47][1]);
+       var mouthRight = createVector(positions[53][0], positions[53][1]);
+       var smile = mouthLeft.dist(mouthRight);
+       var smileMult = 1;
+
+       noStroke();
+       fill(255);
+       ellipse(positions[70][0], positions[70][1], eyebrowLifted * 2, eyebrowLifted * 2);
+       ellipse(positions[66][0], positions[66][1], eyebrowLifted * 2, eyebrowLifted * 2);
+       fill(0);
+       ellipse(positions[32][0], positions[32][1], 15, 15);
+       ellipse(positions[27][0], positions[27][1], 15, 15);
+       rect(20, 40, eyebrowLifted * 3, 20);
+       ellipse(positions[57][0], positions[57][1], smile * 2, smile / smileMult);
+
+       if (eyebrowLifted >= 35) {
+         synth.triggerAttackRelease("C6", 0.3);
+       }
+
+       rect(20, 20, smile * 3, 20);
+       if (smile >= 30) {
+         synth.triggerAttackRelease("C4", 0.3);
+         smileMult = 5;
+       }
+     }
 }
 //-----------------------------------------------------------------------------
 function kA() {synth.triggerAttackRelease("C3", 0.3);}
