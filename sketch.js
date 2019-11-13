@@ -1,115 +1,46 @@
 //Noise Machine
 //by Eddson Jose
 //-----------------------------------------------------------------------------
-//Sound
-let synth1, mic, vol, env, noise, autoFilter, counter = 0;
-//Face Detection
-var capture, tracker, faceSize, faceWidth, faceNumber;
+let value = 0, counter = 0, counter2 = 0, monoSynth, osc;
 //-----------------------------------------------------------------------------
 function setup() {
-  createCanvas(windowWidth, windowHeight);
-  //Sound
-  noise = new Tone.Noise({
-    "type":"brown",
-    "playbackRate":1,
-    "volume":0.01
-  })
-  autoFilter = new Tone.AutoFilter({
-  	"baseFrequency":faceWidth,
-    "depth":0.2,
-    "frequency":0
-  }).connect(Tone.Master);
-  noise.connect(autoFilter);
-  //Face Detection
-  capture = createCapture({audio: false,video: {width: windowWidth,height: windowHeight}}, function() {console.log('capture ready.')});capture.elt.setAttribute('playsinline', '');
-  capture.size(640, 480);
-  capture.hide();
-
-  tracker = new clm.tracker();
-  tracker.init();
-  tracker.start(capture.elt);
-  rect(0, 0, width, height);
-  // mic = new p5.AudioIn();
-  // mic.start();
+  monoSynth = new p5.MonoSynth();
+  monoSynth.amp(2);
+  createCanvas(windowWidth, windowHeight);//Canvas
+  textAlign(CENTER);
+  textSize(12);
 }
 //-----------------------------------------------------------------------------
 function draw() {
-  background(30, 40, 90, 10);
-  noStroke();
-  fill(255);
-  counter++;
-  rect(random(0, width), random(0, height), faceNumber/9, faceNumber/9);
-  rect(random(0, width), random(0, height), 2, 2);
-  //face detection
-  image(capture, 0, 0, 640, 480);
-    var positions = tracker.getCurrentPosition();
-  //face detection visualizer
-  noFill();
-  stroke(255);
-  beginShape();
-  for (var i = 0; i < positions.length; i++) {
-    vertex(positions[i][0], positions[i][1]);
-  }
-  endShape();
-  noStroke();
-  for (var i = 0; i < positions.length; i++) {
-    fill(map(i, 0, positions.length, 0, 360), 50, 100);
-    ellipse(positions[i][0], positions[i][1], 4, 4);
-    text(i, positions[i][0], positions[i][1]);
-  }
-  // estimate face size through distance of edges of face
-  if (positions.length > 0) {
-    var mouthLeft = createVector(positions[0][0], positions[0][1]);
-    var mouthRight = createVector(positions[14][0], positions[14][1]);
-    faceSize = mouthLeft.dist(mouthRight)/2;
-    rect(20, 20, faceSize, 20);
-    // console.log(autoFilter.baseFrequency);
-    faceNumber = int(faceSize);
-    if (faceNumber >= 81) {
-      faceWidth = 800;
-    }
-    if (faceNumber <= 80) {
-      faceWidth = 80;
-    }
-    noise.start();
-    autoFilter.start()
-  }
-  console.log(faceWidth);
+  background(10, 20, 70);
+  strokeWeight(5); stroke(255); fill(0, 0);
+  rect(width/4+width/8, height/12, width/4, height*0.85);
+  noStroke(); fill(255);
+  text(value, width/2, height*0.8);
+  text('Fast Reply', width/2-125, height/4);
+  text('Type fast for more friends', width/2+90, height/3);
+
+  counter++; if (counter >= 3) {counter = 0; value--}
+
+  if (value < 0) {value = 0;} fill(200, 0, 0);
+  if (value === 10) {monoSynth.play("C5", 0, 0, 0); circle(width/2+10, height*0.8-15, 10);}
+  if (value === 20) {monoSynth.play("D5", 0, 0, 0); circle(width/2+10, height*0.8-15, 10);}
+  if (value === 30) {monoSynth.play("C5", 0, 0, 0); circle(width/2+10, height*0.8-15, 10);}
+  if (value === 40) {monoSynth.play("D5", 0, 0, 0); circle(width/2+10, height*0.8-15, 10);}
+  if (value === 50) {monoSynth.play("A5", 0, 0, 0); circle(width/2+10, height*0.8-15, 10);}
+  if (value === 60) {monoSynth.play("D5", 0, 0, 0); circle(width/2+10, height*0.8-15, 10);}
+  if (value === 70) {monoSynth.play("C5", 0, 0, 0); circle(width/2+10, height*0.8-15, 10);}
+  if (value === 80) {monoSynth.play("D5", 0, 0, 0); circle(width/2+10, height*0.8-15, 10);}
+  if (value === 90) {monoSynth.play("C5", 0, 0, 0); circle(width/2+10, height*0.8-15, 10);}
+  if (value === 100) {monoSynth.play("E5", 0, 0, 0); circle(width/2+10, height*0.8-15, 10);}
+  if (value === 120) {monoSynth.play("C5", 0, 0, 0); circle(width/2+10, height*0.8-15, 10);}
+  if (value === 140) {monoSynth.play("D5", 0, 0, 0); circle(width/2+10, height*0.8-15, 10);}
+  if (value === 160) {monoSynth.play("C5", 0, 0, 0); circle(width/2+10, height*0.8-15, 10);}
+  if (value === 180) {monoSynth.play("D5", 0, 0, 0); circle(width/2+10, height*0.8-15, 10);}
+  if (value === 200) {monoSynth.play("A5", 0, 0, 0); circle(width/2+10, height*0.8-15, 10);}
+  if (value === 220) {monoSynth.play("D5", 0, 0, 0); circle(width/2+10, height*0.8-15, 10);}
+  if (value === 240) {monoSynth.play("C5", 0, 0, 0); circle(width/2+10, height*0.8-15, 10);}
+  // console.log(counter2);
 }
 //-----------------------------------------------------------------------------
-function mousePressed() {
-  // noise.mute = false;
-}
-
-//Count then change value of face width
-// if (counter >= 10) {
-//   // ellipse(width/2, height/2, faceSize, faceSize);
-//   sound();
-//   counter = 0;
-//
-//   if (faceSize >= 100) {
-//     faceWidth = 200;
-//   }
-//   if (faceSize <= 99) {
-//     faceWidth = 80;
-//   }
-//   console.log(faceSize);
-// }
-
-//Get volume of mic
-// function sound() {
-//   vol = mic.getLevel() * 100000;
-// }
-
-//P5.Sound
-// noise = new p5.Noise("brown");
-// noise.start();
-// noise.amp(0.5);
-// env = new p5.Env();
-// set attackTime, decayTime, sustainRatio, releaseTime
-// env.setADSR(0.001, 0.1, 0.2, 0.9);
-// set attackLevel, releaseLevel
-// env.setRange(5, 0);
-// p5.Amplitude will analyze all sound in the sketch
-// unless the setInput() method is used to specify an input.
-// analyzer = new p5.Amplitude();
+function keyTyped() {if (key) {value++;}}
