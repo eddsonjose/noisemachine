@@ -24,7 +24,7 @@ function draw() {
   text('Fast Reply', width/2-125, height/4);
   text('Type fast for more friends', width/2+90, height/3);
 
-  counter++; if (counter >= 6) {counter = 0; value--}
+  counter++; if (counter >= 5) {counter = 0; value--}
   //CDAEFG
   if (value < 0) {value = 0;} fill(200, 0, 0);
   if (value === 10) {monoSynth.play("G4", 0, 0, 0); circle(width/2+18, height*0.8-13, 15);}
